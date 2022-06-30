@@ -8,6 +8,7 @@
 //#include<linux/types.h>	//dev_t
 //#include<linux/kdev_t.h>	//MAJOR/MINOR/MKDEV
 #include<linux/fs.h>		//注册函数
+#include <linux/blkdev.h>
 
 #define HELLO_MAJOR 0
 
