@@ -11,8 +11,8 @@ static int arr[]={1,2,3,4,5,6};
 static int nums=sizeof(arr)/sizeof(int);
 
 module_param(cnt,int,S_IRUGO);   //类型支持布尔(bool invbool)、
-								 //字符指针(charp)、
-								 //整形(int long short uint ulong ushort)
+				//字符指针(charp)、
+				//整形(int long short uint ulong ushort)
 module_param(hi,charp,S_IRUGO);
 module_param_array(arr,int,&nums,S_IRUGO);	//赋值不能超过数组大小，否则报错
 
