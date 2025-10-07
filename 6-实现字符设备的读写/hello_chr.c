@@ -40,6 +40,7 @@ int hc_open(struct inode *inode, struct file *filp)
 	struct hello_char_dev *hc_dev;
 	printk(KERN_INFO "open hc_dev%d %d\n",iminor(inode),MINOR(inode->i_cdev->dev));
 	hc_dev = container_of(inode->i_cdev,struct hello_char_dev,cdev);  //获取设备结构体的地址
+	printk(KERN_INFO"open addr:%p\n",hc_devp);
 	filp->private_data = hc_dev;		//将设备结构地址放到文件描述符结构的私有数据中
 
 	return 0;
@@ -75,7 +76,7 @@ ssize_t hc_write(struct file *filp, const char __user *buf, size_t count,loff_t 
 	hc_dev->c=NULL;
 	hc_dev->n=0;
 	hc_dev->c = kzalloc(count,GFP_KERNEL);
-	printk(KERN_INFO"addr %p",hc_dev->c);
+	printk(KERN_INFO"string addr %p",hc_dev->c);
 	if(!hc_dev->c)
 		goto out;
 	if(copy_from_user(hc_dev->c,buf,count))
@@ -111,7 +112,7 @@ struct file_operations hc_fops = {		//字符设备的操作函数
 static int __init hello_init(void)	
 {
 	int ret,i;
-	printk(KERN_INFO "---BEGIN HELLO LINUX MODULE---\n");
+	printk(KERN_INFO "---BEGIN HELLO LINUX MODULE INIT---\n");
 	if(hello_major){
 		devt=MKDEV(hello_major,hello_minor);
 		ret=register_chrdev_region(devt,hello_nr_devs,"hello_chr");	//使用指定的设备号分配
@@ -132,6 +133,7 @@ static int __init hello_init(void)
 		ret = -ENOMEM;
 		goto failure_kzalloc;		//内核常用goto处理错误
 	}
+	printk(KERN_INFO"struct addr:%p\n",hc_devp);
 	
 	for(i=0;i<hello_nr_devs;i++){	
 		cdev_init(&hc_devp[i].cdev,&hc_fops);		//初始化字符设备结构
@@ -143,7 +145,7 @@ static int __init hello_init(void)
 		}
 	}	
 	
-	hc_cls = class_create(THIS_MODULE,"hc_dev");
+	hc_cls = class_create("hc_dev");
 	if(!hc_cls)
 	{
 		printk(KERN_WARNING"fail create class");
@@ -153,7 +155,7 @@ static int __init hello_init(void)
 	for(i=0;i<hello_nr_devs;i++){
 		device_create(hc_cls,NULL,MKDEV(hello_major,hello_minor+i),NULL,"hc_dev%d",i);
 	}	
-	printk(KERN_INFO "---END HELLO LINUX MODULE---\n");
+	printk(KERN_INFO "---END HELLO LINUX MODULE INIT---\n");
 	return 0;
 
 failure_class:

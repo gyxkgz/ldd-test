@@ -16,6 +16,6 @@ module_init(hello_init);
 module_exit(hello_exit);
 
 //描述性定义
-//MODULE_LICENSE("Dual BSD/GPL");//许可 GPL、GPL v2、Dual MPL/GPL、Proprietary(专有)等,没有内核会提示
+MODULE_LICENSE("Dual BSD/GPL");//许可 GPL、GPL v2、Dual MPL/GPL、Proprietary(专有)等,没有内核会提示
 MODULE_AUTHOR("KGZ");		//作者
 MODULE_VERSION("V1.0");  	//版本

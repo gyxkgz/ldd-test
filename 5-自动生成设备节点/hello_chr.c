@@ -98,7 +98,7 @@ static int __init hello_init(void)
 		}
 	}	
 	
-	hc_cls = class_create(THIS_MODULE,"hc_dev");
+	hc_cls = class_create("hc_dev");
 	if(!hc_cls)
 	{
 		printk(KERN_WARNING"fail create class");
